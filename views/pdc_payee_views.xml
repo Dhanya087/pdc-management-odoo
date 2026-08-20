@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ══════════════════════ PAYEE FORM ══════════════════════ -->
+    <record id="view_pdc_payee_form" model="ir.ui.view">
+        <field name="name">pdc.payee.form</field>
+        <field name="model">pdc.payee</field>
+        <field name="arch" type="xml">
+            <form string="Payee">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_cheques"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-file-text-o">
+                            <field name="cheque_count" widget="statinfo" string="Cheques"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Payee Name..."/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Contact Details">
+                            <field name="name"/>
+                            <field name="contact_number"/>
+                            <field name="email" widget="email"/>
+                            <field name="partner_id"/>
+                            <!-- Show company when multi-company is active -->
+                            <field name="company_id" readonly="1"
+                                   groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <group string="Address">
+                        <field name="address" nolabel="1" colspan="2"/>
+                    </group>
+                    <notebook>
+                        <page string="Notes">
+                            <field name="notes" placeholder="Notes about this payee..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ══════════════════════ PAYEE LIST ══════════════════════ -->
+    <record id="view_pdc_payee_list" model="ir.ui.view">
+        <field name="name">pdc.payee.list</field>
+        <field name="model">pdc.payee</field>
+        <field name="arch" type="xml">
+            <list string="Payees" decoration-muted="not active">
+                <field name="name"/>
+                <field name="contact_number"/>
+                <field name="email"/>
+                <field name="cheque_count"/>
+                <field name="total_amount" widget="monetary"/>
+                <!-- Show company column when multi-company is active -->
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="active" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ══════════════════════ PAYEE SEARCH ══════════════════════ -->
+    <record id="view_pdc_payee_search" model="ir.ui.view">
+        <field name="name">pdc.payee.search</field>
+        <field name="model">pdc.payee</field>
+        <field name="arch" type="xml">
+            <search string="Search Payees">
+                <field name="name"/>
+                <field name="contact_number"/>
+                <field name="email"/>
+                <!-- Filter by company when multi-company is active -->
+                <field name="company_id" groups="base.group_multi_company"/>
+                <filter string="Active"   name="active"   domain="[('active','=',True)]"/>
+                <filter string="Archived" name="archived" domain="[('active','=',False)]"/>
+                <group expand="1" string="Group By">
+                    <filter string="Company" name="group_company"
+                            context="{'group_by': 'company_id'}"
+                            groups="base.group_multi_company"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ══════════════════════ PAYEE ACTION ══════════════════════ -->
+    <record id="action_pdc_payee" model="ir.actions.act_window">
+        <field name="name">Payees</field>
+        <field name="res_model">pdc.payee</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_pdc_payee_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add your first payee!
+            </p>
+            <p>Manage payees to link with your cheques.</p>
+        </field>
+    </record>
+
+    <!-- ══════════════════════ FAIL WIZARD VIEW ══════════════════════ -->
+    <record id="view_pdc_fail_wizard_form" model="ir.ui.view">
+        <field name="name">pdc.fail.wizard.form</field>
+        <field name="model">pdc.fail.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Mark Cheque as Failed">
+                <group>
+                    <field name="cheque_id" readonly="1"/>
+                    <field name="cheque_number" readonly="1"/>
+                    <field name="amount" readonly="1"/>
+                    <field name="failure_reason" required="1"
+                           placeholder="e.g., Insufficient funds, Signature mismatch, Account closed..."/>
+                </group>
+                <footer>
+                    <button name="action_confirm_fail" type="object"
+                            string="Confirm Failed" class="btn-danger"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

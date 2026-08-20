@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ══════════════════════ BANK FORM ══════════════════════ -->
+    <record id="view_pdc_bank_form" model="ir.ui.view">
+        <field name="name">pdc.bank.form</field>
+        <field name="model">pdc.bank</field>
+        <field name="arch" type="xml">
+            <form string="Bank Details">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="bank_name" placeholder="Bank Name..."/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Bank Information">
+                            <field name="bank_name"/>
+                            <field name="account_number"/>
+                            <field name="ifsc_code"/>
+                            <field name="branch"/>
+                        </group>
+                        <group string="Additional">
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Notes">
+                            <field name="notes" placeholder="Additional notes about this bank account..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ══════════════════════ BANK LIST ══════════════════════ -->
+    <record id="view_pdc_bank_list" model="ir.ui.view">
+        <field name="name">pdc.bank.list</field>
+        <field name="model">pdc.bank</field>
+        <field name="arch" type="xml">
+            <list string="Banks" decoration-muted="not active">
+                <field name="bank_name"/>
+                <field name="account_number"/>
+                <field name="ifsc_code"/>
+                <field name="branch"/>
+                <field name="active" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ══════════════════════ BANK SEARCH ══════════════════════ -->
+    <record id="view_pdc_bank_search" model="ir.ui.view">
+        <field name="name">pdc.bank.search</field>
+        <field name="model">pdc.bank</field>
+        <field name="arch" type="xml">
+            <search string="Search Banks">
+                <field name="bank_name"/>
+                <field name="account_number"/>
+                <field name="ifsc_code"/>
+                <field name="branch"/>
+                <filter string="Active"   name="active"   domain="[('active','=',True)]"/>
+                <filter string="Archived" name="archived" domain="[('active','=',False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- ══════════════════════ BANK ACTION ══════════════════════ -->
+    <record id="action_pdc_bank" model="ir.actions.act_window">
+        <field name="name">Bank Accounts</field>
+        <field name="res_model">pdc.bank</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_pdc_bank_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add your first bank account!
+            </p>
+            <p>Set up bank accounts to link with your cheques.</p>
+        </field>
+    </record>
+</odoo>

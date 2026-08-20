@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+<t t-name="pdc_management.pdc_dashboard_template">
+<div class="o_pdc_dashboard container-fluid py-4">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-start mb-4">
+        <div>
+            <h3 class="mb-0 fw-bold">PDC Cheque Dashboard</h3>
+            <small class="text-muted">Post-Dated Cheque Management · Live Overview</small>
+        </div>
+        <!-- Currency badge — changes with company -->
+        <div class="d-flex align-items-center gap-2">
+            <span class="badge bg-light border text-dark fs-6 px-3 py-2">
+                <t t-esc="getCountryFlag()"/>
+                <t t-esc="' ' + state.currencySymbol"/>
+            </span>
+        </div>
+    </div>
+
+    <!-- KPI ROW 1 -->
+    <div class="row g-3 mb-3">
+
+        <div class="col-md-3">
+            <div t-att-class="'pdc-card pdc-card-danger' + (isActiveCard('overdue') ? ' pdc-card-active' : '')"
+                 t-on-click="onCardClick.bind(this, 'overdue')">
+                <div class="pdc-card-label">Overdue</div>
+                <div class="pdc-card-count text-danger" t-esc="state.overdue_count"/>
+                <div class="pdc-card-amount" t-esc="formatAmount(state.overdue_amount)"/>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div t-att-class="'pdc-card pdc-card-warning' + (isActiveCard('today') ? ' pdc-card-active' : '')"
+                 t-on-click="onCardClick.bind(this, 'today')">
+                <div class="pdc-card-label">Due Today</div>
+                <div class="pdc-card-count text-warning" t-esc="state.due_today_count"/>
+                <div class="pdc-card-amount" t-esc="formatAmount(state.due_today_amount)"/>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div t-att-class="'pdc-card pdc-card-info' + (isActiveCard('due_7') ? ' pdc-card-active' : '')"
+                 t-on-click="onCardClick.bind(this, 'due_7')">
+                <div class="pdc-card-label">Due in 7 Days</div>
+                <div class="pdc-card-count text-info" t-esc="state.due_7_days_count"/>
+                <div class="pdc-card-amount" t-esc="formatAmount(state.due_7_days_amount)"/>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div t-att-class="'pdc-card pdc-card-primary' + (isActiveCard('due_15') ? ' pdc-card-active' : '')"
+                 t-on-click="onCardClick.bind(this, 'due_15')">
+                <div class="pdc-card-label">Due in 15 Days</div>
+                <div class="pdc-card-count text-primary" t-esc="state.due_15_days_count"/>
+                <div class="pdc-card-amount" t-esc="formatAmount(state.due_15_days_amount)"/>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- KPI ROW 2 -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-4">
+            <div t-att-class="'pdc-card pdc-card-secondary' + (isActiveCard('in_prog') ? ' pdc-card-active' : '')"
+                 t-on-click="onCardClick.bind(this, 'in_prog')">
+                <div class="pdc-card-label">In Progress</div>
+                <div class="pdc-card-count text-secondary" t-esc="state.in_progress_count"/>
+                <div class="pdc-card-amount" t-esc="formatAmount(state.in_progress_amount)"/>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div t-att-class="'pdc-card pdc-card-success' + (isActiveCard('processed') ? ' pdc-card-active' : '')"
+                 t-on-click="onCardClick.bind(this, 'processed')">
+                <div class="pdc-card-label">Processed</div>
+                <div class="pdc-card-count text-success" t-esc="state.processed_count"/>
+                <div class="pdc-card-amount" t-esc="formatAmount(state.processed_amount)"/>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div t-att-class="'pdc-card pdc-card-dark' + (isActiveCard('cancelled') ? ' pdc-card-active' : '')"
+                 t-on-click="onCardClick.bind(this, 'cancelled')">
+                <div class="pdc-card-label">Cancelled</div>
+                <div class="pdc-card-count text-dark" t-esc="state.cancelled_count"/>
+                <div class="pdc-card-amount" t-esc="formatAmount(state.cancelled_amount)"/>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- DETAIL PANEL -->
+    <t t-if="state.selectedView">
+        <div class="card shadow-sm border-0">
+
+            <!-- Panel Header -->
+            <div class="card-header bg-white d-flex justify-content-between align-items-center flex-wrap gap-2 py-3">
+                <div>
+                    <span class="fw-bold fs-6" t-esc="getViewLabel()"/>
+                    <span class="text-muted ms-2 small">
+                        <t t-esc="state.filteredRows.length"/> records ·
+                        Total: <t t-esc="formatAmount(getTotalAmount())"/>
+                    </span>
+                </div>
+                <div class="d-flex gap-2 flex-wrap align-items-center">
+                    <input type="text"
+                           class="form-control form-control-sm"
+                           style="width:160px"
+                           placeholder="Search payee / cheque..."
+                           t-att-value="state.filterSearch"
+                           t-on-input="onSearchInput"/>
+                    <select class="form-select form-select-sm" style="width:150px" t-on-change="onBankChange">
+                        <option value="all">All Banks</option>
+                        <t t-foreach="getUniqueBanks()" t-as="bank" t-key="bank">
+                            <option t-att-value="bank"
+                                    t-att-selected="state.filterBank === bank"
+                                    t-esc="bank"/>
+                        </t>
+                    </select>
+                    <select class="form-select form-select-sm" style="width:150px" t-on-change="onMonthChange">
+                        <option value="all">All Months</option>
+                        <t t-foreach="getUniqueMonths()" t-as="ym" t-key="ym">
+                            <option t-att-value="ym"
+                                    t-att-selected="state.filterMonth === ym"
+                                    t-esc="monthLabel(ym)"/>
+                        </t>
+                    </select>
+                    <button class="btn btn-sm btn-outline-secondary" t-on-click="onClosePanel">✕ Close</button>
+                </div>
+            </div>
+
+            <!-- Loading -->
+            <t t-if="state.tableLoading">
+                <div class="text-center py-5 text-muted">
+                    <div class="spinner-border spinner-border-sm me-2" role="status"/>
+                    Loading cheques...
+                </div>
+            </t>
+
+            <!-- Table or empty -->
+            <t t-else="">
+                <t t-if="state.filteredRows.length">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-sm align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Reference</th>
+                                    <th>Cheque No.</th>
+                                    <th>Payee</th>
+                                    <th>Bank</th>
+                                    <th class="text-end">
+                                        Amount
+                                        <span class="text-muted fw-normal small ms-1"
+                                              t-esc="'(' + state.currencySymbol + ')'"/>
+                                    </th>
+                                    <th>Due Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="state.filteredRows" t-as="row" t-key="row.id">
+                                    <tr style="cursor:pointer"
+                                        t-on-click="onRowClick.bind(this, row.id)">
+                                        <td class="fw-medium" t-esc="row.name"/>
+                                        <td t-esc="row.cheque_number"/>
+                                        <td t-esc="row.payee"/>
+                                        <td t-esc="row.bank"/>
+                                        <td class="text-end fw-medium" t-esc="formatAmount(row.amount)"/>
+                                        <td t-esc="formatDate(row.date)"/>
+                                        <td>
+                                            <span t-att-class="'badge pdc-badge ' + getBadgeClass(row.status)"
+                                                  t-esc="row.status"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+                <t t-else="">
+                    <div class="text-center py-5 text-muted">
+                        No cheques match the selected filters.
+                    </div>
+                </t>
+            </t>
+
+        </div>
+    </t>
+
+</div>
+</t>
+</templates>

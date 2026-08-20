@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- ══════════════════════════════════════════════════════
+             CATEGORY
+        ══════════════════════════════════════════════════════════ -->
+        <record id="module_pdc_category" model="ir.module.category">
+            <field name="name">PDC Management</field>
+            <field name="description">Cheque Management (Post Dated Cheques)</field>
+            <field name="sequence">100</field>
+        </record>
+
+        <!-- ══════════════════════════════════════════════════════
+             GROUPS
+        ══════════════════════════════════════════════════════════ -->
+
+        <!-- Finance Manager Group -->
+        <record id="group_pdc_manager" model="res.groups">
+            <field name="name">Finance Manager</field>
+            <field name="category_id" ref="module_pdc_category"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <!-- Finance User Group -->
+        <record id="group_pdc_user" model="res.groups">
+            <field name="name">Finance User</field>
+            <field name="category_id" ref="module_pdc_category"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <!-- ══════════════════════════════════════════════════════
+             MULTI-COMPANY RECORD RULES
+             company_ids = active companies of the logged-in user.
+             Applied at ORM level - works for ALL views and RPCs.
+        ══════════════════════════════════════════════════════════ -->
+
+        <!-- Rule for pdc.cheque -->
+        <record id="pdc_cheque_company_rule" model="ir.rule">
+            <field name="name">PDC Cheque: Multi-Company Rule</field>
+            <field name="model_id" ref="model_pdc_cheque"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="perm_read"   eval="True"/>
+            <field name="perm_write"  eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <!-- Rule for pdc.payee -->
+        <record id="pdc_payee_company_rule" model="ir.rule">
+            <field name="name">PDC Payee: Multi-Company Rule</field>
+            <field name="model_id" ref="model_pdc_payee"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="perm_read"   eval="True"/>
+            <field name="perm_write"  eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+    </data>
+</odoo>

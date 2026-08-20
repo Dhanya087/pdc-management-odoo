@@ -1,0 +1,66 @@
+/* PDC Dashboard Cards */
+.pdc-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 20px 24px;
+    cursor: pointer;
+    transition: box-shadow 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+    user-select: none;
+    min-height: 110px;
+}
+
+.pdc-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10);
+    transform: translateY(-2px);
+}
+
+.pdc-card.pdc-card-active {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+}
+
+.pdc-card-label {
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6b7280;
+    margin-bottom: 8px;
+}
+
+.pdc-card-count {
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 6px;
+}
+
+.pdc-card-amount {
+    font-size: 14px;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+/* Active border colors per card type */
+.pdc-card-danger.pdc-card-active   { border-color: #ef4444; border-width: 2px; }
+.pdc-card-warning.pdc-card-active  { border-color: #f59e0b; border-width: 2px; }
+.pdc-card-info.pdc-card-active     { border-color: #06b6d4; border-width: 2px; }
+.pdc-card-primary.pdc-card-active  { border-color: #3b82f6; border-width: 2px; }
+.pdc-card-secondary.pdc-card-active{ border-color: #6b7280; border-width: 2px; }
+.pdc-card-success.pdc-card-active  { border-color: #22c55e; border-width: 2px; }
+.pdc-card-dark.pdc-card-active     { border-color: #1f2937; border-width: 2px; }
+
+/* Status badges in table */
+.pdc-badge {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 20px;
+    text-transform: capitalize;
+}
+
+.badge-active    { background-color: #d1fae5; color: #065f46; }
+.badge-draft     { background-color: #f3f4f6; color: #374151; border: 1px solid #e5e7eb; }
+.badge-processed { background-color: #dbeafe; color: #1e40af; }
+.badge-cancelled { background-color: #fee2e2; color: #991b1b; }

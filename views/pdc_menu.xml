@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Root Menu -->
+    <menuitem id="menu_pdc_root"
+              name="PDC Management"
+              sequence="55"
+              web_icon="pdc_management,static/description/icon.png"
+              groups="pdc_management.group_pdc_user,pdc_management.group_pdc_manager"/>
+
+    <!-- Dashboard -->
+   <menuitem id="menu_pdc_dashboard"
+          name="Dashboard"
+          parent="menu_pdc_root"
+          action="pdc_management.action_pdc_dashboard_client"
+          sequence="1"/>
+
+    <!-- Cheques Menu Group -->
+    <menuitem id="menu_pdc_cheques"
+              name="Cheques"
+              parent="menu_pdc_root"
+              sequence="10"/>
+
+    <menuitem id="menu_pdc_cheque_all"
+              name="All Cheques"
+              parent="menu_pdc_cheques"
+              action="action_pdc_cheque_all"
+              sequence="1"/>
+
+    <menuitem id="menu_pdc_cheque_overdue"
+              name="Overdue"
+              parent="menu_pdc_cheques"
+              action="action_pdc_cheque_overdue"
+              sequence="2"/>
+
+    <menuitem id="menu_pdc_cheque_due_today"
+              name="Due Today"
+              parent="menu_pdc_cheques"
+              action="action_pdc_cheque_due_today"
+              sequence="3"/>
+
+    <menuitem id="menu_pdc_cheque_7days"
+              name="Due in 7 Days"
+              parent="menu_pdc_cheques"
+              action="action_pdc_cheque_7days"
+              sequence="4"/>
+
+    <menuitem id="menu_pdc_cheque_15days"
+              name="Due in 15 Days"
+              parent="menu_pdc_cheques"
+              action="action_pdc_cheque_15days"
+              sequence="5"/>
+
+    <!-- Configuration Menu Group -->
+    <menuitem id="menu_pdc_config"
+              name="Configuration"
+              parent="menu_pdc_root"
+              sequence="50"
+              groups="pdc_management.group_pdc_manager"/>
+
+
+
+    <menuitem id="menu_pdc_payees"
+              name="Payees"
+              parent="menu_pdc_config"
+              action="action_pdc_payee"
+              sequence="2"
+              groups="pdc_management.group_pdc_manager"/>
+</odoo>

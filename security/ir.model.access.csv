@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_pdc_bank_manager,pdc.bank.manager,model_pdc_bank,pdc_management.group_pdc_manager,1,1,1,1
+access_pdc_bank_user,pdc.bank.user,model_pdc_bank,pdc_management.group_pdc_user,1,0,0,0
+access_pdc_payee_manager,pdc.payee.manager,model_pdc_payee,pdc_management.group_pdc_manager,1,1,1,1
+access_pdc_payee_user,pdc.payee.user,model_pdc_payee,pdc_management.group_pdc_user,1,0,0,0
+access_pdc_cheque_manager,pdc.cheque.manager,model_pdc_cheque,pdc_management.group_pdc_manager,1,1,1,1
+access_pdc_cheque_user,pdc.cheque.user,model_pdc_cheque,pdc_management.group_pdc_user,1,0,0,0
+access_pdc_fail_wizard_manager,pdc.fail.wizard.manager,model_pdc_fail_wizard,pdc_management.group_pdc_manager,1,1,1,1
+access_pdc_fail_wizard_user,pdc.fail.wizard.user,model_pdc_fail_wizard,pdc_management.group_pdc_user,1,1,1,1
