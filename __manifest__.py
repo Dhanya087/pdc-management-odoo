@@ -1,21 +1,27 @@
-# -*- coding: utf-8 -*-
 {
     'name': 'Cheque Management (PDC)',
     'version': '18.0.1.0.0',
     'category': 'Accounting/Finance',
-    'summary': 'Post Dated Cheque Management - Track, Monitor and Manage PDC',
+    'summary': 'Manage and track post-dated cheques',
     'description': """
-        Cheque Management (PDC) Module
-        ================================
-        - Bank Details Management
-        - Cheque Entry & Tracking
-        - Payee Management
-        - Auto Status Classification (15 days / 7 days / Today / Overdue)
-        - Automated Alerts & Reminders
-        - Comprehensive Filters & Reports
+Cheque Management (PDC)
+======================
+
+Features:
+- Bank Details Management
+- Cheque Entry and Tracking
+- Payee Management
+- Automatic Cheque Status Classification
+- Automated Alerts and Reminders
+- Filters and Reports
     """,
     'author': 'Dhanya',
-    'depends': ['base', 'mail', 'account'],
+    'license': 'LGPL-3',
+    'depends': [
+        'base',
+        'mail',
+        'account',
+    ],
     'data': [
         'security/pdc_security.xml',
         'security/ir.model.access.csv',
@@ -32,10 +38,10 @@
         'web.assets_backend': [
             'pdc_management/static/src/css/pdc_dashboard.css',
             'pdc_management/static/src/js/pdc_dashboard.js',
-            'pdc_management/static/src/xml/pdc_dashboard_template.xml',],
+            'pdc_management/static/src/xml/pdc_dashboard_template.xml',
+        ],
     },
     'installable': True,
     'application': True,
     'auto_install': False,
-    'license': 'LGPL-3',
 }
